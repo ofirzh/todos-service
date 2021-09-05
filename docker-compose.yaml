@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+#  todos-service:
+#    image: todos-service:latest
+##    command: sh -c "sleep 1d" # for debug purposes
+#    restart: always
+#    ports:
+#      - 80:80
+#    networks:
+#      - mongonet
+#    environment:
+#      - LOGLEVEL=debug
+#      - APP_HOST=0.0.0.0
+#      - APP_PORT=80
+
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/redbull/dev_sandbox/db/database:/data/db
+#    networks:
+#      - mongonet
+    ports:
+    - 27017:27017
+    restart: unless-stopped
+
+#networks:
+#  mongonet:
