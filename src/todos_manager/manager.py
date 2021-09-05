@@ -14,7 +14,7 @@ class TodosDBManager:
 
     async def add(self, todo: CreateTodo) -> str:
         """
-        Receives Create todo object and inserts into collection. Order=
+        Receives CreateTodo object and inserts into collection.
         :param todo:
         :return:
         """
@@ -59,8 +59,16 @@ class TodosDBManager:
         return result.modified_count == 0
 
     async def count(self) -> int:
+        """
+        Returns todos count in collection
+        :return:
+        """
         return await self.collection.count_documents({})
 
     async def clear_all(self):
+        """
+        Clear this collection
+        :return:
+        """
         await self.collection.delete_many({})
 
