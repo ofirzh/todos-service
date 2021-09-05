@@ -2,7 +2,7 @@ from os import environ as env
 from typing import List
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from src.logger import init_logging
+from src.utils.logger import init_logging
 from src.todos_manager.manager import TodosDBManager
 from src.todos_manager.schemas.todo import CreateTodo, Todo, UpdateTodo, UpdateTodoOrder
 
@@ -13,7 +13,7 @@ LOG_LEVEL = env.get('LOGLEVEL', 'DEBUG').upper()
 DB_URL = env.get('DB_URL', 'mongodb://localhost:27017')
 
 
-# Initialize Todos manger and web service
+# Initialize TodosDbManger and web service
 todos_db_manager = TodosDBManager(DB_URL)
 app = FastAPI()
 logger = init_logging(LOG_LEVEL)
@@ -44,7 +44,7 @@ async def update_todo(todo: UpdateTodo):
 
 @app.patch("/todos", status_code=200)
 async def update_todo_order(todo: UpdateTodoOrder):
-    logger.debug(f"Update todo request: {todo}")
+    logger.debug(f"Update order of todo request: {todo}")
     res = await todos_db_manager.update_order(todo)
     if not res:
         raise HTTPException(status_code=404, detail="not found")
