@@ -53,7 +53,7 @@ async def update_todo_order(todo: UpdateTodoOrder):
 
 @app.get("/clear_all", status_code=200)
 async def clear_todos():
-    logger.debug(f"get todos request")
+    logger.debug(f"Clear all todos request")
     await todos_db_manager.clear_all()
     return {}
 
