@@ -19,7 +19,7 @@ class TodosDBManager:
         :return:
         """
         order = (await self.count()) * 100
-        new_todo = await self.collection.insert_one({"title": todo.title, "order": order})
+        new_todo = await self.collection.insert_one({"title": todo.title, "order": order, "done": False})
         return new_todo.inserted_id
 
     async def get(self, max_length=100, offset=0) -> List[Todo]:
@@ -31,7 +31,7 @@ class TodosDBManager:
         cursor = self.collection.find()
         cursor.sort('order', 1).skip(offset).limit(max_length)
         for document in await cursor.to_list(length=max_length):
-            todos.append(Todo(id=str(document["_id"]), title=document["title"]))
+            todos.append(Todo(id=str(document["_id"]), title=document["title"], done=document["done"]))
         return todos
 
     async def update(self, update: UpdateTodo) -> bool:
@@ -40,9 +40,9 @@ class TodosDBManager:
         :param update:
         """
         # find and replace title
-        update_obj = {'title': update.title}
+        update_obj = {'title': update.title, 'done': update.done}
         result = await self.collection.update_one({'_id': ObjectId(update.id)}, {"$set": update_obj})
-        return result.modified_count == 0
+        return result.modified_count != 0
 
     async def update_order(self, update: UpdateTodoOrder) -> bool:
         """
@@ -56,7 +56,7 @@ class TodosDBManager:
             return False
         set_obj = {'order': to_above_todo["order"] - 1}
         result = await self.collection.update_one({'_id': ObjectId(update.id)}, {'$set': set_obj})
-        return result.modified_count == 0
+        return result.modified_count != 0
 
     async def count(self) -> int:
         """
