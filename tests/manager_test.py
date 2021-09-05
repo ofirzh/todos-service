@@ -23,11 +23,12 @@ async def main():
     assert await tm.count() == 3
 
     print("test ADD passed")
-    up1 = UpdateTodo(id=list[0].id, title="first1")
+    up1 = UpdateTodo(id=list[0].id, title="first1", done=True)
     await tm.update(up1)
     list = await tm.get()
     print(list)
-    assert list[0].title == "first1"
+    print(list[0])
+    assert list[0].title == "first1" and list[0].done == True
     print("test UPDATE passed")
 
     up_order = UpdateTodoOrder(id=list[2].id, above_id=list[0].id)

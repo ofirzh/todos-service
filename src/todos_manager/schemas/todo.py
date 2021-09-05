@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class Todo(BaseModel):
     title: str
     id: str
+    done: bool
 
 
 class CreateTodo(BaseModel):
@@ -13,6 +14,7 @@ class CreateTodo(BaseModel):
 class UpdateTodo(BaseModel):
     id: str
     title: str
+    done: bool
 
 
 class UpdateTodoOrder(BaseModel):

@@ -23,7 +23,7 @@ logger = init_logging(LOG_LEVEL)
 async def add_todo(todo: CreateTodo) -> Todo:
     logger.debug(f"Create todo request: {todo}")
     new_id = await todos_db_manager.add(todo)
-    return Todo(id=str(new_id), title=todo.title)
+    return Todo(id=str(new_id), title=todo.title, done=False)
 
 
 @app.get("/todos",  response_model=List[Todo])
